@@ -1,0 +1,183 @@
+/* Modern Design System - Inspired by Radix UI & Tailwind */
+:root {
+  /* Color palette */
+  --gray-1: #fcfcfc;
+  --gray-2: #f9f9f9;
+  --gray-3: #f0f0f0;
+  --gray-12: #1d1d1d;
+  --blue-9: #0090ff;
+  --blue-11: #006adc;
+  
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+  
+  /* Spacing scale */
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  
+  /* Border radius */
+  --radius-2: 4px;
+  --radius-3: 6px;
+  --radius-4: 8px;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gray-1: #111111;
+    --gray-2: #191919;
+    --gray-3: #222222;
+    --gray-12: #eeeeee;
+    --blue-9: #0ea5e9;
+    --blue-11: #38bdf8;
+  }
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--gray-1);
+  color: var(--gray-12);
+  max-width: 65ch;
+  margin: 0 auto;
+  padding: var(--space-8);
+  line-height: 1.6;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography scale */
+h1, h2 {
+  color: var(--blue-11);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.025em;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+
+h3 {
+  color: var(--blue-9);
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-3);
+  letter-spacing: -0.015em;
+}
+
+p {
+  margin-bottom: var(--space-4);
+  color: var(--gray-12);
+}
+
+/* Lists */
+ul {
+  margin: var(--space-4) 0;
+  padding-left: var(--space-6);
+}
+
+li {
+  margin-bottom: var(--space-2);
+}
+
+li::marker {
+  color: var(--blue-9);
+}
+
+/* Enhanced SVG graphics with glassmorphism effect */
+svg {
+  background: linear-gradient(135deg, var(--gray-2) 0%, var(--gray-1) 100%);
+  border: 1px solid var(--gray-3);
+  border-radius: var(--radius-4);
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: var(--space-4);
+  margin: var(--space-6) auto;
+  display: block;
+  max-width: 100%;
+  height: auto;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+}
+
+svg:hover {
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.07),
+    0 20px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px) scale(1.02);
+  border-color: var(--blue-9);
+}
+
+/* Code styling */
+code {
+  font-family: var(--font-mono);
+  background: var(--gray-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-2);
+  font-size: 0.875em;
+  border: 1px solid var(--gray-3);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  body {
+    padding: var(--space-4);
+    max-width: 100%;
+  }
+  
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.25rem; }
+  
+  svg {
+    padding: var(--space-3);
+    margin: var(--space-4) auto;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  svg {
+    transition: none;
+  }
+  
+  svg:hover {
+    transform: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    max-width: none;
+    margin: 0;
+    padding: 1rem;
+    background: white;
+    color: black;
+  }
+  
+  svg {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    background: white;
+  }
+  
+  h1, h2, h3 {
+    color: black;
+  }
+}
