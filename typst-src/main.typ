@@ -10,8 +10,22 @@
 #let inject-css() = context {
   if sys.inputs.at("target", default: "pdf") == "html" {
     html.elem("style", 
-      "h1, h2, h3 { color: #0090ff; font-weight: 700; } svg { margin: 1.5em auto; display: block; border-radius: 8px; } body { max-width: 65ch; margin: 0 auto; padding: 2rem; }"
+      "h1, h2, h3 { color: #0090ff; font-weight: 700; } svg { margin: 1.5em auto; display: block; border-radius: 8px; } body { max-width: 65ch; margin: 0 auto; padding: 2rem; } span svg { margin: 0; display: inline-block; vertical-align: middle; }"
     )
+  }
+}
+
+// Math helper for HTML export - handles inline vs block properly
+#let math-html(equation) = context {
+  if sys.inputs.at("target", default: "pdf") == "html" {
+    // For inline equations, wrap in box to keep inline
+    if equation.has("block") and equation.block == false {
+      box(html.frame(equation))
+    } else {
+      html.frame(equation)
+    }
+  } else {
+    equation
   }
 }
 
@@ -58,6 +72,15 @@ The following graphics are created with CeTZ:
   circle((0, 0))
   line((0, 0), (2, 1))
 })
+
+== Math and Equations
+
+Here's an inline equation: #math-html($E = m c^2$) and some display math:
+
+#math-html($ integral_0^infinity e^(-x^2) dif x = sqrt(pi)/2 $)
+
+The quadratic formula:
+#math-html($ x = (-b plus.minus sqrt(b^2 - 4 a c)) / (2 a) $)
 
 == More Text
 

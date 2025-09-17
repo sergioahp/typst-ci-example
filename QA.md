@@ -57,3 +57,61 @@ error: failed to download package (Network Error: OpenSSL error)
 4. **Include transitive dependencies**: Check if the package imports other packages
 
 This design ensures **fail-fast, fail-clear** behavior while maintaining complete build reproducibility.
+
+## Math Equations in HTML Export
+
+### Q: How do I render math equations in Typst HTML export?
+
+**A:** Typst's HTML export doesn't support math equations natively, but there are effective workarounds:
+
+#### **Current Status (2024-2025)**
+- ❌ **No native MathML**: Implementation was attempted but closed (PR #5721)
+- ⚠️ **HTML export ignores math**: Equations disappear in HTML by default
+- ✅ **SVG workaround**: Using `html.frame()` converts math to inline SVGs
+
+#### **Recommended Solution**
+```typst
+// Math helper function for HTML compatibility
+#let math-html(equation) = context {
+  if sys.inputs.at("target", default: "pdf") == "html" {
+    // Handle inline vs block equations properly
+    if equation.has("block") and equation.block == false {
+      box(html.frame(equation))  // Inline: keep on same line
+    } else {
+      html.frame(equation)       // Block: standalone
+    }
+  } else {
+    equation  // Native math for PDF
+  }
+}
+
+// Usage
+Here's inline: #math-html($E = m c^2$) and display:
+#math-html($ x = (-b plus.minus sqrt(b^2 - 4a c)) / (2a) $)
+```
+
+#### **CSS Styling**
+Add CSS to improve math appearance:
+```css
+/* Block equations: centered */
+svg { margin: 1.5em auto; display: block; border-radius: 8px; }
+/* Inline equations: aligned with text */
+span svg { margin: 0; display: inline-block; vertical-align: middle; }
+```
+
+#### **Alternative: Global Show Rules**
+For automatic equation handling:
+```typst
+#show math.equation: it => context {
+  if sys.inputs.at("target") == "html" {
+    if it.block { html.frame(it) } else { box(html.frame(it)) }
+  } else {
+    it
+  }
+}
+```
+
+#### **Result**
+- **PDF**: Perfect native math rendering
+- **HTML**: Math as crisp SVG graphics with proper inline/block behavior
+- **Cross-platform**: Works in all browsers that support SVG
