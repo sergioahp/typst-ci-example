@@ -2,6 +2,8 @@ name: "Deploy PDF to GitHub Pages"
 on:
   push:
     branches: [ main, master ]
+    paths:
+      - 'typst-src/**'
 
 permissions:
   contents: read
@@ -20,13 +22,15 @@ jobs:
     - uses: cachix/install-nix-action@v31
       with:
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
-    - run: nix run .#build
+    - name: Create build directory
+      run: mkdir -p build
+    - run: nix develop -c typst compile typst-src/main.typ build/main.pdf
     - name: Setup Pages
       uses: actions/configure-pages@v5
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: '.'
+        path: './build'
         
   deploy:
     environment:
