@@ -15,17 +15,16 @@
   }
 }
 
-// Math helper for HTML export - handles inline vs block properly
-#let math-html(equation) = context {
+// Automatic math equation handling with show rule
+#show math.equation: it => context {
   if sys.inputs.at("target", default: "pdf") == "html" {
-    // For inline equations, wrap in box to keep inline
-    if equation.has("block") and equation.block == false {
-      box(html.frame(equation))
+    if it.block {
+      html.frame(it)           // Block: standalone SVG
     } else {
-      html.frame(equation)
+      box(html.frame(it))      // Inline: wrapped SVG
     }
   } else {
-    equation
+    it                         // PDF: native math
   }
 }
 
@@ -75,12 +74,12 @@ The following graphics are created with CeTZ:
 
 == Math and Equations
 
-Here's an inline equation: #math-html($E = m c^2$) and some display math:
+Here's an inline equation: $E = m c^2$ and some display math:
 
-#math-html($ integral_0^infinity e^(-x^2) dif x = sqrt(pi)/2 $)
+$ integral_0^infinity e^(-x^2) dif x = sqrt(pi)/2 $
 
 The quadratic formula:
-#math-html($ x = (-b plus.minus sqrt(b^2 - 4 a c)) / (2 a) $)
+$ x = (-b plus.minus sqrt(b^2 - 4 a c)) / (2 a) $
 
 == More Text
 
