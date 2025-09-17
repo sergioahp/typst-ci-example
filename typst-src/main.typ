@@ -16,13 +16,9 @@ The following graphics are created with CeTZ:
 
 #import "@preview/cetz:0.3.4"
 
-#{
-  let canvas = cetz.canvas({
-    import cetz.draw: *
-    
-    circle((0, 0))
-    line((0, 0), (2, 1))
-  })
+// Reusable function for CeTZ HTML export compatibility
+#let cetz-html(body) = {
+  let canvas = cetz.canvas(body)
   
   // Workaround for HTML export: wrap in html.frame
   context if sys.inputs.at("target", default: "pdf") == "html" {
@@ -31,6 +27,13 @@ The following graphics are created with CeTZ:
     canvas
   }
 }
+
+#cetz-html({
+  import cetz.draw: *
+  
+  circle((0, 0))
+  line((0, 0), (2, 1))
+})
 
 == More Text
 
