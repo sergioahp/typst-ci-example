@@ -6,15 +6,17 @@
   )
 )
 
-// Light CSS injection for HTML (only when requested)
-#let inject-light-css() = context {
-  if sys.inputs.at("target", default: "pdf") == "html" and sys.inputs.at("light-css", default: "false") == "true" {
-    raw(block: false, "<style>h1,h2,h3{color:#0090ff;}svg{margin:1em auto;display:block;}</style>")
+// CSS injection using html.elem (cleaner approach)
+#let inject-css() = context {
+  if sys.inputs.at("target", default: "pdf") == "html" {
+    html.elem("style", 
+      "h1, h2, h3 { color: #0090ff; font-weight: 700; } svg { margin: 1.5em auto; display: block; border-radius: 8px; } body { max-width: 65ch; margin: 0 auto; padding: 2rem; }"
+    )
   }
 }
 
-// Apply light theming (no CSS injection by default)
-#inject-light-css()
+// Apply CSS injection using html.elem
+#inject-css()
 #set text(size: 11pt, fill: theme.colors.text)
 #set heading(numbering: "1.")
 #show heading.where(level: 1): set text(size: 2.25em, weight: 700, fill: theme.colors.primary)
